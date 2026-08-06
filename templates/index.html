@@ -13,109 +13,168 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f5f5f5;
-            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
         }
         
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-        }
-        
-        .section {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        h2 {
-            color: #555;
-            margin-bottom: 15px;
-            font-size: 18px;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #666;
-            font-weight: 500;
-        }
-        
-        input, textarea, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-        
-        button {
-            background-color: #007bff;
+        .header {
+            text-align: center;
             color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
+            margin-bottom: 40px;
         }
         
-        button:hover {
-            background-color: #0056b3;
-        }
-        
-        .ticket-list {
-            list-style: none;
-        }
-        
-        .ticket-item {
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+        .header h1 {
+            font-size: 36px;
+            font-weight: 700;
             margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h2 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        /* Create Ticket Section */
+        .create-ticket-form {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+        
+        .form-field {
+            flex: 1;
+        }
+        
+        .form-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .form-field input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-field input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        /* Ticket Table */
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        tbody tr {
+            border-bottom: 1px solid #e0e0e0;
             cursor: pointer;
             transition: background-color 0.2s;
         }
         
-        .ticket-item:hover {
+        tbody tr:hover {
             background-color: #f8f9fa;
         }
         
-        .ticket-title {
-            font-weight: 600;
+        tbody tr.selected {
+            background-color: #e8eaf6;
+        }
+        
+        td {
+            padding: 16px;
             color: #333;
-            margin-bottom: 5px;
+            font-size: 14px;
         }
         
-        .ticket-meta {
-            font-size: 12px;
-            color: #888;
-        }
-        
+        /* Status Badges */
         .status-badge {
             display: inline-block;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 11px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: 600;
-            text-transform: uppercase;
-            margin-left: 10px;
+            text-transform: capitalize;
         }
         
         .status-open {
@@ -124,124 +183,240 @@
         }
         
         .status-in-progress {
-            background-color: #ffc107;
-            color: #333;
+            background-color: #ff9800;
+            color: white;
         }
         
-        .status-closed {
+        .status-closed, .status-resolved {
             background-color: #6c757d;
             color: white;
         }
         
+        .status-select {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            background: white;
+        }
+        
+        .status-select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        /* Messages Section */
+        .messages-section {
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .messages-section.active {
+            display: block;
+        }
+        
+        .messages-header {
+            color: #667eea;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .messages-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
         .message {
-            padding: 12px;
-            background-color: #f8f9fa;
-            border-left: 3px solid #007bff;
-            border-radius: 4px;
-            margin-bottom: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid #667eea;
         }
         
         .message-author {
             font-weight: 600;
             color: #333;
-            font-size: 13px;
+            font-size: 14px;
         }
         
         .message-time {
-            font-size: 11px;
+            font-size: 12px;
             color: #888;
             margin-left: 10px;
         }
         
         .message-text {
-            margin-top: 5px;
+            margin-top: 8px;
             color: #555;
             font-size: 14px;
+            line-height: 1.5;
         }
         
-        .error {
-            color: #dc3545;
-            padding: 10px;
-            background-color: #f8d7da;
-            border-radius: 4px;
-            margin-bottom: 15px;
+        .message-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
         
-        .hidden {
+        .message-form textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .message-form textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .message-form-row {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+        
+        .message-form-row .form-field {
+            flex: 1;
+        }
+        
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             display: none;
+            z-index: 1000;
         }
         
-        .back-button {
-            background-color: #6c757d;
-            margin-bottom: 15px;
+        .notification.show {
+            display: block;
+            animation: slideIn 0.3s ease;
         }
         
-        .back-button:hover {
-            background-color: #5a6268;
+        .notification.error {
+            border-left: 4px solid #dc3545;
+        }
+        
+        .notification.success {
+            border-left: 4px solid #28a745;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .create-ticket-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .message-form-row {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="notification" id="notification"></div>
+    
     <div class="container">
-        <h1>Support Ticket System</h1>
-        
-        <div id="ticketListView">
-            <div class="section">
-                <h2>Create New Ticket</h2>
-                <div id="createError" class="error hidden"></div>
-                <form id="createTicketForm">
-                    <div class="form-group">
-                        <label for="ticketTitle">Title</label>
-                        <input type="text" id="ticketTitle" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="createdBy">Your Name</label>
-                        <input type="text" id="createdBy" value="anonymous">
-                    </div>
-                    <button type="submit">Create Ticket</button>
-                </form>
-            </div>
-            
-            <div class="section">
-                <h2>All Tickets</h2>
-                <div id="listError" class="error hidden"></div>
-                <ul id="ticketList" class="ticket-list"></ul>
-            </div>
+        <!-- Header -->
+        <div class="header">
+            <h1>Support Ticket System</h1>
+            <p>Manage and track customer support requests</p>
         </div>
         
-        <div id="ticketDetailView" class="hidden">
-            <button class="back-button" onclick="showTicketList()">← Back to List</button>
-            
-            <div class="section">
-                <h2 id="ticketDetailTitle"></h2>
-                <div id="ticketDetailMeta" class="ticket-meta"></div>
-                
-                <div class="form-group" style="margin-top: 20px;">
-                    <label for="statusSelect">Update Status</label>
-                    <select id="statusSelect">
-                        <option value="open">Open</option>
-                        <option value="in-progress">In Progress</option>
-                        <option value="closed">Closed</option>
-                    </select>
+        <!-- Create Ticket Section -->
+        <div class="card">
+            <h2>Create New Ticket</h2>
+            <form id="createTicketForm" class="create-ticket-form">
+                <div class="form-field">
+                    <label for="ticketTitle">Ticket Title</label>
+                    <input type="text" id="ticketTitle" placeholder="Describe the issue..." required>
                 </div>
-                <button onclick="updateStatus()">Update Status</button>
+                <div class="form-field">
+                    <label for="createdBy">Your Name</label>
+                    <input type="text" id="createdBy" value="anonymous" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Ticket</button>
+            </form>
+        </div>
+        
+        <!-- Ticket List Section -->
+        <div class="card">
+            <div class="table-header">
+                <h2>All Tickets</h2>
+                <button class="btn btn-secondary" onclick="loadTickets()">Refresh</button>
+            </div>
+            <div class="table-container">
+                <table id="ticketTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th>Created By</th>
+                            <th>Update Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ticketList">
+                    </tbody>
+                </table>
             </div>
             
-            <div class="section">
-                <h2>Messages</h2>
-                <div id="messageList"></div>
+            <!-- Messages Section (shown when ticket is selected) -->
+            <div class="messages-section" id="messagesSection">
+                <div class="messages-header" id="messagesHeader">
+                    Messages for: <span id="selectedTicketTitle"></span>
+                </div>
                 
-                <div id="messageError" class="error hidden"></div>
-                <form id="addMessageForm" style="margin-top: 20px;">
-                    <div class="form-group">
-                        <label for="messageText">Your Message</label>
-                        <textarea id="messageText" required></textarea>
+                <div class="messages-list" id="messagesList">
+                </div>
+                
+                <form id="addMessageForm" class="message-form">
+                    <textarea id="messageText" placeholder="Type your message here..." required></textarea>
+                    <div class="message-form-row">
+                        <div class="form-field">
+                            <label for="messageAuthor">Your Name</label>
+                            <input type="text" id="messageAuthor" value="anonymous" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
                     </div>
-                    <div class="form-group">
-                        <label for="messageAuthor">Your Name</label>
-                        <input type="text" id="messageAuthor" value="anonymous">
-                    </div>
-                    <button type="submit">Add Message</button>
                 </form>
             </div>
         </div>
@@ -250,11 +425,15 @@
     <script>
         let currentTicketId = null;
         
-        function showError(elementId, message) {
-            const el = document.getElementById(elementId);
-            el.textContent = message;
-            el.classList.remove('hidden');
-            setTimeout(() => el.classList.add('hidden'), 5000);
+        // Utility Functions
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
         }
         
         function formatDate(dateString) {
@@ -266,77 +445,72 @@
             return 'status-' + status.replace('_', '-');
         }
         
+        // Load Tickets
         async function loadTickets() {
             try {
                 const response = await fetch('/api/tickets');
                 if (!response.ok) throw new Error('Failed to load tickets');
                 
                 const tickets = await response.json();
-                const list = document.getElementById('ticketList');
+                const tbody = document.getElementById('ticketList');
                 
                 if (tickets.length === 0) {
-                    list.innerHTML = '<li style="color: #888; padding: 15px;">No tickets yet</li>';
+                    tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No tickets yet. Create your first ticket above!</td></tr>';
                     return;
                 }
                 
-                list.innerHTML = tickets.map(ticket => `
-                    <li class="ticket-item" onclick="showTicketDetail(${ticket.id})">
-                        <div class="ticket-title">
-                            ${ticket.title}
-                            <span class="status-badge ${getStatusClass(ticket.status)}">${ticket.status}</span>
-                        </div>
-                        <div class="ticket-meta">
-                            Created by ${ticket.created_by} on ${formatDate(ticket.created_at)}
-                        </div>
-                    </li>
+                tbody.innerHTML = tickets.map(ticket => `
+                    <tr data-ticket-id="${ticket.id}" onclick="selectTicket(${ticket.id}, '${ticket.title.replace(/'/g, "\\'")}')">
+                        <td>#${ticket.id}</td>
+                        <td>${ticket.title}</td>
+                        <td><span class="status-badge ${getStatusClass(ticket.status)}">${ticket.status.replace('-', ' ')}</span></td>
+                        <td>${ticket.created_by}</td>
+                        <td onclick="event.stopPropagation()">
+                            <select class="status-select" onchange="updateStatus(${ticket.id}, this.value)">
+                                <option value="open" ${ticket.status === 'open' ? 'selected' : ''}>Open</option>
+                                <option value="in-progress" ${ticket.status === 'in-progress' ? 'selected' : ''}>In Progress</option>
+                                <option value="closed" ${ticket.status === 'closed' ? 'selected' : ''}>Closed</option>
+                            </select>
+                        </td>
+                    </tr>
                 `).join('');
             } catch (error) {
-                showError('listError', error.message);
+                showNotification('Error loading tickets: ' + error.message, 'error');
             }
         }
         
-        async function showTicketDetail(ticketId) {
+        // Select Ticket and Load Messages
+        async function selectTicket(ticketId, ticketTitle) {
             currentTicketId = ticketId;
             
-            try {
-                const response = await fetch(`/api/tickets/${ticketId}`);
-                if (!response.ok) throw new Error('Failed to load ticket');
-                
-                const ticket = await response.json();
-                
-                document.getElementById('ticketDetailTitle').textContent = ticket.title;
-                document.getElementById('ticketDetailMeta').innerHTML = `
-                    <span class="status-badge ${getStatusClass(ticket.status)}">${ticket.status}</span>
-                    <br><br>
-                    Created by ${ticket.created_by} on ${formatDate(ticket.created_at)}
-                `;
-                document.getElementById('statusSelect').value = ticket.status;
-                
-                await loadMessages(ticketId);
-                
-                document.getElementById('ticketListView').classList.add('hidden');
-                document.getElementById('ticketDetailView').classList.remove('hidden');
-            } catch (error) {
-                showError('listError', error.message);
-            }
+            // Highlight selected row
+            document.querySelectorAll('#ticketList tr').forEach(row => {
+                row.classList.remove('selected');
+            });
+            document.querySelector(`tr[data-ticket-id="${ticketId}"]`).classList.add('selected');
+            
+            // Show messages section
+            document.getElementById('selectedTicketTitle').textContent = ticketTitle;
+            document.getElementById('messagesSection').classList.add('active');
+            
+            // Load messages
+            await loadMessages(ticketId);
+            
+            // Scroll to messages section
+            document.getElementById('messagesSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
         
-        function showTicketList() {
-            document.getElementById('ticketDetailView').classList.add('hidden');
-            document.getElementById('ticketListView').classList.remove('hidden');
-            loadTickets();
-        }
-        
+        // Load Messages
         async function loadMessages(ticketId) {
             try {
                 const response = await fetch(`/api/tickets/${ticketId}/messages`);
                 if (!response.ok) throw new Error('Failed to load messages');
                 
                 const messages = await response.json();
-                const list = document.getElementById('messageList');
+                const list = document.getElementById('messagesList');
                 
                 if (messages.length === 0) {
-                    list.innerHTML = '<p style="color: #888;">No messages yet</p>';
+                    list.innerHTML = '<div class="empty-state">No messages yet. Be the first to add one!</div>';
                     return;
                 }
                 
@@ -349,29 +523,39 @@
                         <div class="message-text">${msg.message}</div>
                     </div>
                 `).join('');
+                
+                // Scroll to bottom of messages
+                list.scrollTop = list.scrollHeight;
             } catch (error) {
-                showError('messageError', error.message);
+                showNotification('Error loading messages: ' + error.message, 'error');
             }
         }
         
-        async function updateStatus() {
-            const status = document.getElementById('statusSelect').value;
-            
+        // Update Status
+        async function updateStatus(ticketId, newStatus) {
             try {
-                const response = await fetch(`/api/tickets/${currentTicketId}/status`, {
+                const response = await fetch(`/api/tickets/${ticketId}/status`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ status })
+                    body: JSON.stringify({ status: newStatus })
                 });
                 
                 if (!response.ok) throw new Error('Failed to update status');
                 
-                await showTicketDetail(currentTicketId);
+                showNotification('Status updated successfully!');
+                await loadTickets();
+                
+                // Reselect the ticket to maintain selection
+                if (currentTicketId === ticketId) {
+                    const ticket = await fetch(`/api/tickets/${ticketId}`).then(r => r.json());
+                    selectTicket(ticketId, ticket.title);
+                }
             } catch (error) {
-                showError('messageError', error.message);
+                showNotification('Error updating status: ' + error.message, 'error');
             }
         }
         
+        // Create Ticket Form Handler
         document.getElementById('createTicketForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -388,14 +572,21 @@
                 if (!response.ok) throw new Error('Failed to create ticket');
                 
                 document.getElementById('ticketTitle').value = '';
+                showNotification('Ticket created successfully!');
                 await loadTickets();
             } catch (error) {
-                showError('createError', error.message);
+                showNotification('Error creating ticket: ' + error.message, 'error');
             }
         });
         
+        // Add Message Form Handler
         document.getElementById('addMessageForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            if (!currentTicketId) {
+                showNotification('Please select a ticket first', 'error');
+                return;
+            }
             
             const message = document.getElementById('messageText').value;
             const author = document.getElementById('messageAuthor').value;
@@ -410,12 +601,14 @@
                 if (!response.ok) throw new Error('Failed to add message');
                 
                 document.getElementById('messageText').value = '';
+                showNotification('Message sent successfully!');
                 await loadMessages(currentTicketId);
             } catch (error) {
-                showError('messageError', error.message);
+                showNotification('Error adding message: ' + error.message, 'error');
             }
         });
         
+        // Initial Load
         loadTickets();
     </script>
 </body>
