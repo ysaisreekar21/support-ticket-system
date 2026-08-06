@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 def get_schema_name():
     app_name = 'support_ticket_system'
-    client_id = os.environ['DATABRICKS_CLIENT_ID']
+    client_id = os.environ['DATABRICKS_CLIENT_ID'].replace('-', '_')
     return f"{app_name}_schema_{client_id}"
 
 def init_database():
