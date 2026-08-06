@@ -1,0 +1,13 @@
+name: support-ticket-system
+command: ["python", "app.py"]
+env:
+  - name: FLASK_ENV
+    value: production
+  - name: LAKEBASE_ENDPOINT
+    value: projects/YOUR_PROJECT_ID/branches/YOUR_BRANCH_ID/endpoints/YOUR_ENDPOINT_ID
+resources:
+  - name: lakebase-db
+    lakebase:
+      postgres:
+        branch: projects/YOUR_PROJECT_ID/branches/YOUR_BRANCH_ID
+        database: YOUR_DATABASE_NAME
