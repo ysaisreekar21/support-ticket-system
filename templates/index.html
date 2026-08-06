@@ -19,7 +19,7 @@
         }
         
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
         }
         
@@ -55,6 +55,73 @@
             font-weight: 600;
         }
         
+        /* Statistics Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-card.total {
+            border-left-color: #007bff;
+        }
+        
+        .stat-card.open {
+            border-left-color: #28a745;
+        }
+        
+        .stat-card.in-progress {
+            border-left-color: #ff9800;
+        }
+        
+        .stat-card.closed {
+            border-left-color: #6c757d;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .stat-card.total .stat-value {
+            color: #007bff;
+        }
+        
+        .stat-card.open .stat-value {
+            color: #28a745;
+        }
+        
+        .stat-card.in-progress .stat-value {
+            color: #ff9800;
+        }
+        
+        .stat-card.closed .stat-value {
+            color: #6c757d;
+        }
+        
         /* Create Ticket Section */
         .create-ticket-form {
             display: flex;
@@ -74,7 +141,7 @@
             font-size: 14px;
         }
         
-        .form-field input {
+        .form-field input, .form-field select {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid #e0e0e0;
@@ -83,7 +150,7 @@
             transition: border-color 0.3s;
         }
         
-        .form-field input:focus {
+        .form-field input:focus, .form-field select:focus {
             outline: none;
             border-color: #667eea;
         }
@@ -118,6 +185,43 @@
             transform: translateY(-2px);
         }
         
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+        
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+        
+        /* Filter Section */
+        .filter-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+        
+        .filter-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .filter-label {
+            font-weight: 500;
+            color: #555;
+        }
+        
         /* Ticket Table */
         .table-header {
             display: flex;
@@ -149,7 +253,6 @@
         
         tbody tr {
             border-bottom: 1px solid #e0e0e0;
-            cursor: pointer;
             transition: background-color 0.2s;
         }
         
@@ -165,6 +268,16 @@
             padding: 16px;
             color: #333;
             font-size: 14px;
+        }
+        
+        td.clickable {
+            cursor: pointer;
+        }
+        
+        /* Message count display */
+        .message-count {
+            color: #667eea;
+            font-weight: 600;
         }
         
         /* Status Badges */
@@ -291,6 +404,52 @@
             flex: 1;
         }
         
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-header {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .modal-body {
+            color: #555;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
         /* Notifications */
         .notification {
             position: fixed;
@@ -348,17 +507,60 @@
             .message-form-row {
                 flex-direction: column;
             }
+            
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="notification" id="notification"></div>
     
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">Confirm Delete</div>
+            <div class="modal-body">
+                Are you sure you want to delete this ticket? This action cannot be undone and will also delete all messages associated with this ticket.
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="cancelDelete()">Cancel</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+    
     <div class="container">
         <!-- Header -->
         <div class="header">
             <h1>Support Ticket System</h1>
             <p>Manage and track customer support requests</p>
+        </div>
+        
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <div class="stat-label">Total Tickets</div>
+                <div class="stat-value" id="statTotal">0</div>
+            </div>
+            <div class="stat-card open">
+                <div class="stat-label">Open</div>
+                <div class="stat-value" id="statOpen">0</div>
+            </div>
+            <div class="stat-card in-progress">
+                <div class="stat-label">In Progress</div>
+                <div class="stat-value" id="statInProgress">0</div>
+            </div>
+            <div class="stat-card closed">
+                <div class="stat-label">Closed</div>
+                <div class="stat-value" id="statClosed">0</div>
+            </div>
         </div>
         
         <!-- Create Ticket Section -->
@@ -371,7 +573,7 @@
                 </div>
                 <div class="form-field">
                     <label for="createdBy">Your Name</label>
-                    <input type="text" id="createdBy" value="anonymous" required>
+                    <input type="text" id="createdBy" placeholder="Enter your name">
                 </div>
                 <button type="submit" class="btn btn-primary">Create Ticket</button>
             </form>
@@ -379,10 +581,20 @@
         
         <!-- Ticket List Section -->
         <div class="card">
-            <div class="table-header">
+            <div class="filter-section">
                 <h2>All Tickets</h2>
-                <button class="btn btn-secondary" onclick="loadTickets()">Refresh</button>
+                <div class="filter-controls">
+                    <label class="filter-label">Filter by Status:</label>
+                    <select id="statusFilter" class="form-field" onchange="applyFilter()">
+                        <option value="all">All Tickets</option>
+                        <option value="open">Open</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                    <button class="btn btn-secondary btn-small" onclick="refreshData()">Refresh</button>
+                </div>
             </div>
+            
             <div class="table-container">
                 <table id="ticketTable">
                     <thead>
@@ -391,7 +603,9 @@
                             <th>Title</th>
                             <th>Status</th>
                             <th>Created By</th>
+                            <th>Messages</th>
                             <th>Update Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="ticketList">
@@ -413,7 +627,7 @@
                     <div class="message-form-row">
                         <div class="form-field">
                             <label for="messageAuthor">Your Name</label>
-                            <input type="text" id="messageAuthor" value="anonymous" required>
+                            <input type="text" id="messageAuthor" placeholder="Enter your name">
                         </div>
                         <button type="submit" class="btn btn-primary">Send Message</button>
                     </div>
@@ -424,6 +638,9 @@
     
     <script>
         let currentTicketId = null;
+        let ticketToDelete = null;
+        let allTickets = [];
+        let currentFilter = 'all';
         
         // Utility Functions
         function showNotification(message, type = 'success') {
@@ -445,37 +662,83 @@
             return 'status-' + status.replace('_', '-');
         }
         
+        // Load Statistics
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/tickets/stats');
+                if (!response.ok) throw new Error('Failed to load statistics');
+                
+                const stats = await response.json();
+                
+                document.getElementById('statTotal').textContent = stats.total || 0;
+                document.getElementById('statOpen').textContent = stats.open || 0;
+                document.getElementById('statInProgress').textContent = stats.in_progress || 0;
+                document.getElementById('statClosed').textContent = stats.closed || 0;
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+            }
+        }
+        
         // Load Tickets
         async function loadTickets() {
             try {
                 const response = await fetch('/api/tickets');
                 if (!response.ok) throw new Error('Failed to load tickets');
                 
-                const tickets = await response.json();
-                const tbody = document.getElementById('ticketList');
-                
-                if (tickets.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No tickets yet. Create your first ticket above!</td></tr>';
-                    return;
-                }
-                
-                tbody.innerHTML = tickets.map(ticket => `
-                    <tr data-ticket-id="${ticket.id}" onclick="selectTicket(${ticket.id}, '${ticket.title.replace(/'/g, "\\'")}')">
-                        <td>#${ticket.id}</td>
-                        <td>${ticket.title}</td>
-                        <td><span class="status-badge ${getStatusClass(ticket.status)}">${ticket.status.replace('-', ' ')}</span></td>
-                        <td>${ticket.created_by}</td>
-                        <td onclick="event.stopPropagation()">
-                            <select class="status-select" onchange="updateStatus(${ticket.id}, this.value)">
-                                <option value="open" ${ticket.status === 'open' ? 'selected' : ''}>Open</option>
-                                <option value="in-progress" ${ticket.status === 'in-progress' ? 'selected' : ''}>In Progress</option>
-                                <option value="closed" ${ticket.status === 'closed' ? 'selected' : ''}>Closed</option>
-                            </select>
-                        </td>
-                    </tr>
-                `).join('');
+                allTickets = await response.json();
+                applyFilter();
             } catch (error) {
                 showNotification('Error loading tickets: ' + error.message, 'error');
+            }
+        }
+        
+        // Apply Filter
+        function applyFilter() {
+            currentFilter = document.getElementById('statusFilter').value;
+            
+            let filteredTickets = allTickets;
+            if (currentFilter !== 'all') {
+                filteredTickets = allTickets.filter(ticket => ticket.status === currentFilter);
+            }
+            
+            displayTickets(filteredTickets);
+        }
+        
+        // Display Tickets
+        function displayTickets(tickets) {
+            const tbody = document.getElementById('ticketList');
+            
+            if (tickets.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No tickets found.</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = tickets.map(ticket => `
+                <tr data-ticket-id="${ticket.id}">
+                    <td class="clickable" onclick="selectTicket(${ticket.id}, '${ticket.title.replace(/'/g, "\\'")}')">#${ticket.id}</td>
+                    <td class="clickable" onclick="selectTicket(${ticket.id}, '${ticket.title.replace(/'/g, "\\'")}')">${ticket.title}</td>
+                    <td class="clickable" onclick="selectTicket(${ticket.id}, '${ticket.title.replace(/'/g, "\\'")}')" ><span class="status-badge ${getStatusClass(ticket.status)}">${ticket.status.replace('-', ' ')}</span></td>
+                    <td class="clickable" onclick="selectTicket(${ticket.id}, '${ticket.title.replace(/'/g, "\\'")}')">${ticket.created_by}</td>
+                    <td class="clickable" onclick="selectTicket(${ticket.id}, '${ticket.title.replace(/'/g, "\\'")}')" ><span class="message-count">${ticket.message_count || 0} messages</span></td>
+                    <td onclick="event.stopPropagation()">
+                        <select class="status-select" onchange="updateStatus(${ticket.id}, this.value)">
+                            <option value="open" ${ticket.status === 'open' ? 'selected' : ''}>Open</option>
+                            <option value="in-progress" ${ticket.status === 'in-progress' ? 'selected' : ''}>In Progress</option>
+                            <option value="closed" ${ticket.status === 'closed' ? 'selected' : ''}>Closed</option>
+                        </select>
+                    </td>
+                    <td onclick="event.stopPropagation()">
+                        <button class="btn btn-danger btn-small" onclick="showDeleteConfirm(${ticket.id})">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            // Reselect current ticket if it's still in the list
+            if (currentTicketId) {
+                const row = document.querySelector(`tr[data-ticket-id="${currentTicketId}"]`);
+                if (row) {
+                    row.classList.add('selected');
+                }
             }
         }
         
@@ -487,7 +750,10 @@
             document.querySelectorAll('#ticketList tr').forEach(row => {
                 row.classList.remove('selected');
             });
-            document.querySelector(`tr[data-ticket-id="${ticketId}"]`).classList.add('selected');
+            const selectedRow = document.querySelector(`tr[data-ticket-id="${ticketId}"]`);
+            if (selectedRow) {
+                selectedRow.classList.add('selected');
+            }
             
             // Show messages section
             document.getElementById('selectedTicketTitle').textContent = ticketTitle;
@@ -543,16 +809,54 @@
                 if (!response.ok) throw new Error('Failed to update status');
                 
                 showNotification('Status updated successfully!');
-                await loadTickets();
-                
-                // Reselect the ticket to maintain selection
-                if (currentTicketId === ticketId) {
-                    const ticket = await fetch(`/api/tickets/${ticketId}`).then(r => r.json());
-                    selectTicket(ticketId, ticket.title);
-                }
+                await refreshData();
             } catch (error) {
                 showNotification('Error updating status: ' + error.message, 'error');
             }
+        }
+        
+        // Delete Functions
+        function showDeleteConfirm(ticketId) {
+            ticketToDelete = ticketId;
+            document.getElementById('deleteModal').classList.add('active');
+        }
+        
+        function cancelDelete() {
+            ticketToDelete = null;
+            document.getElementById('deleteModal').classList.remove('active');
+        }
+        
+        async function confirmDelete() {
+            if (!ticketToDelete) return;
+            
+            try {
+                const response = await fetch(`/api/tickets/${ticketToDelete}`, {
+                    method: 'DELETE'
+                });
+                
+                if (!response.ok) throw new Error('Failed to delete ticket');
+                
+                showNotification('Ticket deleted successfully!');
+                
+                // Hide messages section if the deleted ticket was selected
+                if (currentTicketId === ticketToDelete) {
+                    document.getElementById('messagesSection').classList.remove('active');
+                    currentTicketId = null;
+                }
+                
+                // Close modal and refresh
+                document.getElementById('deleteModal').classList.remove('active');
+                ticketToDelete = null;
+                
+                await refreshData();
+            } catch (error) {
+                showNotification('Error deleting ticket: ' + error.message, 'error');
+            }
+        }
+        
+        // Refresh all data
+        async function refreshData() {
+            await Promise.all([loadStats(), loadTickets()]);
         }
         
         // Create Ticket Form Handler
@@ -560,7 +864,7 @@
             e.preventDefault();
             
             const title = document.getElementById('ticketTitle').value;
-            const created_by = document.getElementById('createdBy').value;
+            const created_by = document.getElementById('createdBy').value || 'anonymous';
             
             try {
                 const response = await fetch('/api/tickets', {
@@ -571,9 +875,12 @@
                 
                 if (!response.ok) throw new Error('Failed to create ticket');
                 
+                // Clear form fields on success
                 document.getElementById('ticketTitle').value = '';
+                document.getElementById('createdBy').value = '';
+                
                 showNotification('Ticket created successfully!');
-                await loadTickets();
+                await refreshData();
             } catch (error) {
                 showNotification('Error creating ticket: ' + error.message, 'error');
             }
@@ -589,7 +896,7 @@
             }
             
             const message = document.getElementById('messageText').value;
-            const author = document.getElementById('messageAuthor').value;
+            const author = document.getElementById('messageAuthor').value || 'anonymous';
             
             try {
                 const response = await fetch(`/api/tickets/${currentTicketId}/messages`, {
@@ -600,16 +907,22 @@
                 
                 if (!response.ok) throw new Error('Failed to add message');
                 
+                // Clear form fields on success
                 document.getElementById('messageText').value = '';
+                document.getElementById('messageAuthor').value = '';
+                
                 showNotification('Message sent successfully!');
+                
+                // Reload messages and tickets (to update message count)
                 await loadMessages(currentTicketId);
+                await refreshData();
             } catch (error) {
                 showNotification('Error adding message: ' + error.message, 'error');
             }
         });
         
         // Initial Load
-        loadTickets();
+        refreshData();
     </script>
 </body>
 </html>

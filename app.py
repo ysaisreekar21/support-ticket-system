@@ -5,7 +5,9 @@ import lakebase
 app = Flask(__name__)
 
 def get_schema_name():
-    return "support_ticket_system"
+    app_name = 'support_ticket_system'
+    client_id = os.environ['DATABRICKS_CLIENT_ID']
+    return f"{app_name}_schema_{client_id}"
 
 def init_database():
     schema = get_schema_name()
@@ -41,9 +43,12 @@ def get_tickets():
     try:
         schema = get_schema_name()
         tickets = lakebase.run_query(f"""
-            SELECT id, title, status, created_by, created_at
-            FROM {schema}.tickets
-            ORDER BY created_at DESC
+            SELECT t.id, t.title, t.status, t.created_by, t.created_at,
+                   COALESCE(COUNT(m.id), 0) as message_count
+            FROM {schema}.tickets t
+            LEFT JOIN {schema}.ticket_messages m ON t.id = m.ticket_id
+            GROUP BY t.id, t.title, t.status, t.created_by, t.created_at
+            ORDER BY t.created_at DESC
         """)
         return jsonify(tickets)
     except Exception as e:
@@ -158,6 +163,47 @@ def add_ticket_message(ticket_id):
         """, {'ticket_id': ticket_id})
         
         return jsonify(messages[0]), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/tickets/<int:ticket_id>', methods=['DELETE'])
+def delete_ticket(ticket_id):
+    try:
+        schema = get_schema_name()
+        
+        # First delete all messages for this ticket
+        lakebase.run_write(f"""
+            DELETE FROM {schema}.ticket_messages
+            WHERE ticket_id = :ticket_id
+        """, {'ticket_id': ticket_id})
+        
+        # Then delete the ticket
+        rowcount = lakebase.run_write(f"""
+            DELETE FROM {schema}.tickets
+            WHERE id = :ticket_id
+        """, {'ticket_id': ticket_id})
+        
+        if rowcount == 0:
+            return jsonify({'error': 'Ticket not found'}), 404
+        
+        return jsonify({'success': True}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/tickets/stats', methods=['GET'])
+def get_ticket_stats():
+    try:
+        schema = get_schema_name()
+        stats = lakebase.run_query(f"""
+            SELECT
+                COUNT(*) as total,
+                SUM(CASE WHEN status = 'open' THEN 1 ELSE 0 END) as open,
+                SUM(CASE WHEN status = 'in-progress' THEN 1 ELSE 0 END) as in_progress,
+                SUM(CASE WHEN status = 'closed' THEN 1 ELSE 0 END) as closed
+            FROM {schema}.tickets
+        """)
+        
+        return jsonify(stats[0])
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
