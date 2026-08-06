@@ -5,7 +5,9 @@ import lakebase
 app = Flask(__name__)
 
 def get_schema_name():
-    return "support_ticket_system"
+    app_name = 'support_ticket_system'
+    client_id = os.environ['DATABRICKS_CLIENT_ID'].replace('-', '_')
+    return f"{app_name}_schema_{client_id}"
 
 def init_database():
     schema = get_schema_name()
