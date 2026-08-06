@@ -1,4 +1,3 @@
-import os
 from flask import Flask, request, jsonify, render_template
 import lakebase
 
@@ -202,65 +201,6 @@ def get_ticket_stats():
         """)
         
         return jsonify(stats[0])
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/admin/schemas', methods=['GET'])
-def list_schemas():
-    """Temporary admin endpoint to list and manage schemas"""
-    try:
-        # List all schemas
-        schemas = lakebase.run_query("""
-            SELECT schema_name 
-            FROM information_schema.schemata 
-            WHERE schema_name NOT IN ('information_schema', 'pg_catalog', 'pg_toast')
-            ORDER BY schema_name
-        """)
-        
-        # Get tables in each schema
-        schema_info = {}
-        for schema in schemas:
-            schema_name = schema['schema_name']
-            tables = lakebase.run_query(f"""
-                SELECT table_name 
-                FROM information_schema.tables 
-                WHERE table_schema = '{schema_name}'
-                ORDER BY table_name
-            """)
-            schema_info[schema_name] = [t['table_name'] for t in tables]
-        
-        return jsonify({
-            'schemas': [s['schema_name'] for s in schemas],
-            'schema_details': schema_info
-        })
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/admin/cleanup-old-schema', methods=['POST'])
-def cleanup_old_schema():
-    """Temporary admin endpoint to clean up old dynamic schema"""
-    try:
-        old_schema = "support_ticket_system_schema_fcf538b2_df6b_49cd_a519_9e9a4719bf86"
-        
-        # Check if old schema exists
-        schemas = lakebase.run_query("""
-            SELECT schema_name 
-            FROM information_schema.schemata 
-            WHERE schema_name = :schema_name
-        """, {'schema_name': old_schema})
-        
-        if schemas:
-            # Drop the old schema
-            lakebase.run_write(f"DROP SCHEMA IF EXISTS {old_schema} CASCADE")
-            return jsonify({
-                'success': True,
-                'message': f'Dropped old schema: {old_schema}'
-            })
-        else:
-            return jsonify({
-                'success': True,
-                'message': f'Old schema does not exist: {old_schema}'
-            })
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
